@@ -6,12 +6,12 @@ public class AddressBookDriver {
 
 	public static void main(String[] args) {
 		AddressBook contacts = new AddressBook();
-		String[] commandWords = { "add", "delete", "displayall", "search", "help" };
+		String[] commandWords = { "add", "delete", "displayall", "search", "help", "exit" };
 		Scanner in = new Scanner(System.in);
 		boolean isDone = false;
 		System.out.println("Welcome to Addressbook+");
 		while (!isDone) { // main command loop
-			System.out.println("What would you like to do?");
+			System.out.println("What would you like to do? Type 'help' if you need help.");
 			System.out.print(">");
 			String command = in.next().toLowerCase();
 			switch (command) {
@@ -43,6 +43,10 @@ public class AddressBookDriver {
 				}
 				System.out.println(commandWords[commandWords.length - 1]);
 				System.out.println();
+				break; 
+			case "exit":
+				isDone = true; 
+				System.out.println("Thank you, goodbye!");
 			}
 		}
 	}
