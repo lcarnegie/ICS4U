@@ -12,11 +12,11 @@ public class AddressBook {
 	public void addContact() {
 		Scanner in = new Scanner(System.in);
 		System.out.print("What is their first name?: ");
-		String firstName = in.next();
+		String firstName = in.nextLine();
 		System.out.print("What is their last name?: ");
-		String lastName = in.next();
+		String lastName = in.nextLine();
 		System.out.print("What is their phone number?: ");
-		String phoneNo = in.next();
+		String phoneNo = in.nextLine();
 		Contact newContact = new Contact(firstName, lastName, phoneNo);
 		for (int i = 0; i < contactList.length; i++) {
 			if (contactList[i] == null) {
@@ -33,7 +33,7 @@ public class AddressBook {
 		contactList = biggerList;
 	}
 
-	public void addContact(String firstName, String lastName, String phoneNo) {
+	public void addContact(String firstName, String lastName, String phoneNo) { //method for testing search.
 		Contact newContact = new Contact(firstName, lastName, phoneNo);
 		for (int i = 0; i < contactList.length; i++) {
 			if (contactList[i] == null) {
@@ -91,11 +91,10 @@ public class AddressBook {
 	public int searchContact() {
 		Scanner in = new Scanner(System.in);
 		String searchWord;
-
 		System.out.print("Please enter the last name of the person you wish to find: ");
-		searchWord = in.next();
+		searchWord = in.nextLine();
 		for (int i = 0; i < contactList.length; i++) {
-			if (contactList[i] != null && contactList[i].getLastName().toLowerCase().equals(searchWord)) {
+			if (contactList[i] != null && contactList[i].getLastName().toLowerCase().equals(searchWord.toLowerCase())) {
 				return i;
 			}
 		}

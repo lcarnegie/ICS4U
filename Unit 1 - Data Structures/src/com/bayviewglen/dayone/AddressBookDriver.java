@@ -6,7 +6,7 @@ public class AddressBookDriver {
 
 	public static void main(String[] args) {
 		AddressBook contacts = new AddressBook();
-		String[] commandWords = { "add", "delete", "displayall", "search", "help", "exit" };
+		String[] commandWords = { "add", "delete", "display all", "search", "help", "exit" };
 		Scanner in = new Scanner(System.in);
 		boolean isDone = false;
 		System.out.println("Welcome to Addressbook+");
@@ -16,27 +16,29 @@ public class AddressBookDriver {
 			String command = in.next().toLowerCase();
 			switch (command) {
 			case "add":
-				command = null;
+				in.nextLine(); 
 				contacts.addContact();
 				System.out.println();
 				break;
 			case "delete":
+				in.nextLine(); 
 				command = null;
 				contacts.deleteContact();
 				System.out.println();
 				break;
 			case "search":
+				in.nextLine(); 
 				command = null;
 				contacts.searchAndDisplay();
 				System.out.println();
 				break;
-			case "displayall":
-				command = null;
+			case "display":
+				in.nextLine(); 
 				contacts.displayAll();
 				System.out.println();
 				break;
 			case "help":
-				command = null;
+				in.nextLine(); 
 				System.out.println("Here's what you can do:");
 				for (int i = 0; i < commandWords.length - 1; i++) {
 					System.out.print(commandWords[i] + ", ");
