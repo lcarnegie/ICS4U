@@ -6,7 +6,7 @@ public class AddressBookDriver {
 
 	public static void main(String[] args) {
 		AddressBook contacts = new AddressBook();
-		String[] commandWords = { "add", "delete", "display all", "search", "help", "exit" };
+		String[] commandWords = {"add", "delete", "display all", "search", "help", "exit" };
 		Scanner in = new Scanner(System.in);
 		boolean isDone = false;
 		System.out.println("Welcome to Addressbook+");
