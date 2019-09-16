@@ -1,4 +1,4 @@
-package com.bayviewglen.daytwo;
+package com.bayviewglen.daytwoandthree;
 
 import java.util.Scanner;
 
