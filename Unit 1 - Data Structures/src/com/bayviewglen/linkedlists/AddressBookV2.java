@@ -1,4 +1,4 @@
-package com.bayviewglen.daytwoandthree;
+package com.bayviewglen.linkedlists;
 
 import java.util.Scanner;
 

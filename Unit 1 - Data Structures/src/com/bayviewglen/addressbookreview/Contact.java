@@ -1,4 +1,4 @@
-package com.bayviewglen.dayone;
+package com.bayviewglen.addressbookreview;
 
 public class Contact {
 	private String firstName;

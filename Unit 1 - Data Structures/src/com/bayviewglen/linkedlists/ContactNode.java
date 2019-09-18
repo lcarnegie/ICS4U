@@ -1,4 +1,4 @@
-package com.bayviewglen.daytwoandthree;
+package com.bayviewglen.linkedlists;
 
 public class ContactNode {
 	private Contact data; 

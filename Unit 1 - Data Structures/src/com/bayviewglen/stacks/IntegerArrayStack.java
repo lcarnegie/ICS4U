@@ -1,27 +1,35 @@
-package com.bayviewglen.dayfour;
+package com.bayviewglen.stacks;
 
-public class IntegerLinkListStack implements Stack{
+public class IntegerArrayStack implements Stack {
 	private Integer[] data; 
 	int manyItems; 
+	
+	public IntegerArrayStack() {
+		this.data = new Integer[100]; 
+	}
 
 	public void push(Integer el) {
-		// TODO Auto-generated method stub
+		
 		
 	}
 
-	public void pop() {
+	public Integer pop() {
+		return manyItems;
 		// TODO Auto-generated method stub
 		
 	}
-
+	
 	public Integer peek() {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	public boolean isEmpty() {
-		// TODO Auto-generated method stub
-		return false;
+		
 	}
 
 }
+
+
+
+
