@@ -12,13 +12,14 @@ public class IntegerLinkListStack implements Stack{
 	}
 
 	public Integer pop() {
-		if(isEmpty()) throw new IllegalStateException("No"); 
+		if(isEmpty()) throw new IllegalStateException("The List is Empty!"); 
 		Integer x = peek(); 
 		head = head.getLink();
 		return x; 
 	}
 
 	public Integer peek() {
+		if(isEmpty()) throw new IllegalStateException("The List is Empty!"); 
 		return head.getLink().getData(); 
 	}
 

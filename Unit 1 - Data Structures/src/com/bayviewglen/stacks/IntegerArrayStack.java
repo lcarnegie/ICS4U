@@ -9,22 +9,22 @@ public class IntegerArrayStack implements Stack {
 	}
 
 	public void push(Integer el) {
-		
-		
+		data[manyItems++] = el; 
 	}
 
 	public Integer pop() {
-		return manyItems;
-		// TODO Auto-generated method stub
+		if (isEmpty()) throw new IllegalStateException("Bad! Very Very Bad!!!");
+		return data[--manyItems]; 
 		
 	}
 	
 	public Integer peek() {
-		// TODO Auto-generated method stub
-		return null;
+		if (isEmpty()) throw new IllegalStateException("Bad! Very Very Bad!!!");
+		return data[manyItems-1];
 	}
 
 	public boolean isEmpty() {
+		return (manyItems == 0); 
 		
 	}
 
