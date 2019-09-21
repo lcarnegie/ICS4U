@@ -14,7 +14,7 @@ public class QueenArrayStack implements Stack {
 
 	public Queen pop() {
 		if (isEmpty()) throw new IllegalStateException("Bad! Very Very Bad!!!");
-		return data[--manyItems]; 
+		return data[manyItems--]; 
 		
 	}
 	
