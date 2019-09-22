@@ -2,13 +2,11 @@ package com.bayviewglen.nQueens;
 
 import java.util.Scanner;
 
-
-public class nQueens {
-
-	public static void main(String[] args) {
+public class nQueens { 
+	public static Stack qStack;
+	public static int n;
+	public static void main(String[] args) { 
 		Scanner in = new Scanner(System.in);
-		int n = 0;
-
 		boolean isValidInput = false;
 		while (!isValidInput) {
 			try {
@@ -18,115 +16,95 @@ public class nQueens {
 			} catch (Exception e) {
 
 			}
-		Stack qstack = new QueenArrayStack();
-		Queen[][] board = new Queen[n][n]; 
-		qstack.push(new Queen(0,0));
-		board[0][0] = qstack.peek(); 
-		boolean isBacktracking = false; 
-		for(int filled = 0; filled < n;) {
-			if(filled == -1) {
-				System.out.println("There are no solutions.");
-				return; 
-			}else if(!noConflict(qstack.peek().getxPos(), qstack.peek().getyPos(), n, board) && !roomToSpare(qstack.peek().getxPos(), n)) {
-				isBacktracking = true; 
-				board[qstack.peek().getxPos()][qstack.peek().getxPos()] = null; 
-				qstack.pop(); 
-				filled--; 
-			}else if(!noConflict(qstack.peek().getxPos(), qstack.peek().getyPos(), n, board) && roomToSpare(qstack.peek().getxPos(), n)) {
-				board[qstack.peek().getxPos()][qstack.peek().getyPos()] = null; 
-				int newX = qstack.peek().getxPos() + 1, newY = qstack.peek().getyPos(); 
-				if(newX == n) {
-				}else {
-				board[newX][newY] = new Queen(newX, newY);
-				qstack.peek().setxPos(newX);
-				qstack.peek().setyPos(newY); 
-				}
-			} else if(isBacktracking && noConflict(qstack.peek().getxPos(), qstack.peek().getyPos(), n, board) && roomToSpare(qstack.peek().getxPos(), n)) { // should only get here if backtracking
-				board[qstack.peek().getxPos()][qstack.peek().getxPos()] = null; 
-				int newX = qstack.peek().getxPos() + 1, newY = qstack.peek().getxPos() + 1; 
-				if(newX == 4) {
-					
-				}else {
-				board[newX][newY] = new Queen(newX, newY);
-				qstack.peek().setxPos(newX);
-				qstack.peek().setyPos(newY); 
-				}
-			}else if(noConflict(qstack.peek().getxPos(), qstack.peek().getyPos(), n, board)) {
-				isBacktracking = false;
-				filled++;  
-				if(filled == n) {
-				}else {
-					qstack.push(new Queen(0, filled));
-					board[0][filled] = qstack.peek(); 
-				}
-				
-			} 
-		}
-		printBoard(board); 
-		
-		}
-
-	}
-
-	private static boolean isBacktracking() {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	private static boolean noConflict(int xPos, int yPos, int n, Queen[][] board) {
-		for (int y = yPos - 1, x = xPos; y > -1; y--) { // checks directly below
-			try {
-				if (board[xPos][y].equals(new Queen(x, y))) {
-					return false;
-				}
-			} catch (Exception e) {
-			}
-
-		}
-
-		for (int y = yPos - 1, x = xPos + 1; x < n && y > -1; x++, y--) { // checks for conflict on diagonal heading to
-																			// [0][n]
-			try {
-				if (board[x][y].equals(new Queen(x, y))) {
-					return false;
-				}
-			} catch (Exception e) {
-			}
-
-		}
-		for (int y = yPos - 1, x = xPos - 1; x > -1 && y > -1; x--, y--) {// checks for conflict on diagonal heading to
-																			// [0][0]
-			try {
-				if (board[x][y].equals(new Queen(x, y))) {
-					return false;
-				}
-			} catch (Exception e) {
-			}
-		}
-
-		return true;
-	}
-
-	private static boolean roomToSpare(int xPos, int n) {
-		return (xPos <= n);
-	}
-	
-	private static void printBoard(Queen[][] board) {
-		String[][] stringBoard = new String[board.length][board[0].length]; 
-		for(int i = 0; i < board.length; i++) {
-			for(int j = 0; j < board[i].length; j++) {
-				try {
-					if(board[i][j].equals(new Queen(i,j))) {
-						stringBoard[i][j] = board[i][j].getSymbol(); 
+			qStack = new QueenArrayStack(n);
+			qStack.push(new Queen(0, 0));
+			boolean isBacktracking = false;
+			for (int filled = 0; filled < n;) {
+				if (filled == -1) { // only gets here if the first queen has been shifted until there is no room to spare. 
+					System.out.println("There are no solutions.");
+					return;
+				} else if (checkForConflict(qStack.peek()) && !roomToSpare(qStack.peek(), n)) {
+					filled--; 
+					qStack.pop(); 
+					filled = backtrack(filled); 
+				} else if (checkForConflict(qStack.peek()) && roomToSpare(qStack.peek(), n)) {
+					shiftQueen(); 
+				} else if (!checkForConflict(qStack.peek())) {
+					filled++; 
+					if(filled == n) {
+					}else {
+					qStack = addQueen(filled); 
 					}
-				} catch(Exception e) {
-					stringBoard[i][j] = "X"; 
 				}
+			}
+
+		}
+
+	}
+
+
+	private static int backtrack(int filled) {
+		if(checkForConflict(qStack.peek()) && roomToSpare(qStack.peek(), n)) {
+			shiftQueen(); 
+		}else {
+			filled--;
+			qStack.pop(); 
+			filled = backtrack(filled); 
+		}
+		return filled; 
+	}
+
+
+	private static Stack addQueen(int filled) {
+			qStack.push(new Queen(0, filled));
+			return qStack; 
+	}
+
+
+	private static void shiftQueen() {
+		qStack.peek().setxPos(qStack.peek().getxPos() + 1); //shifts queen one over in the x-axis
+		
+	}
+
+
+	private static boolean checkForConflict(Queen curr) {
+		Stack temp = qStack; 
+		temp.pop(); //pops the current queen off of the stack
+		boolean conflict = false; 
+		try {
+		while(!conflict) {
+			if(qStack.peek().getxPos() == curr.getyPos() || Math.abs(qStack.peek().getxPos() - curr.getxPos()) == Math.abs(qStack.peek().getyPos() - curr.getyPos())){
+				conflict = true; 
+			}else {
+				temp.pop(); 
+			}
+		}
+		}catch (Exception e) { // gets here if the temp has only one element left, so there should be no conflict. 
+			conflict = false; 
+		}
+
+		return conflict; 
+	}
+
+	private static boolean roomToSpare(Queen queen, int n) {
+		return (queen.getxPos() + 1 < n);
+	}
+	private static void printBoard(Stack qstack) {
+		String[][] stringBoard = new String[n][n]; 
+		for (int i = 0; i < stringBoard.length; i++) {
+			for (int j = 0; j < stringBoard[i].length; j++) {
+					if (i == qStack.peek().getxPos() && j == qStack.peek().getyPos()) {
+						stringBoard[i][j] = qstack.pop().getSymbol();
+					}else {
+						stringBoard[i][j] = "X"; 
+					}
+				
 				System.out.print(stringBoard[i][j] + " ");
 			}
 			System.out.println();
 		}
-		
+
 	}
+
 
 }
