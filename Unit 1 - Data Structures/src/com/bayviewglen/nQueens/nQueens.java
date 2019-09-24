@@ -145,7 +145,7 @@ public class nQueens {
 	
 	/*Print Board:
 	 * 
-	 * This method prints the stack to the console. It first places every Queen by popping the stack and 
+	 * This method prints the solution to the console. It first places every Queen by popping the stack and 
 	 * retrieving each Queen's unique x- and y-value. It then fills the rest of the spaces between the Queens
 	 * with an "X". 
 	 * 
