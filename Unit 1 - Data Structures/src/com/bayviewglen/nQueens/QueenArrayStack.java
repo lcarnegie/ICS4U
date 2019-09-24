@@ -10,6 +10,11 @@ public class QueenArrayStack implements Stack {
 	public QueenArrayStack(int n) {
 		this.data = new Queen[n]; 
 	}
+	
+	public QueenArrayStack(Queen[] data, int manyItems) {
+		this.data = data; 
+		this.manyItems = manyItems; 
+	}
 
 	public void push(Queen el) {
 		data[manyItems] = (Queen) el; 
@@ -24,7 +29,7 @@ public class QueenArrayStack implements Stack {
 	
 	public Queen peek() {
 		if (isEmpty()) throw new IllegalStateException("Bad! Very Very Bad!!!");
-		return data[manyItems-1];
+		return data[manyItems - 1];
 	}
 
 	public boolean isEmpty() {
@@ -32,8 +37,9 @@ public class QueenArrayStack implements Stack {
 		
 	}
 	
-	public int length() {
-		return data.length; 
+	public Stack clone() {
+		return new QueenArrayStack(this.data, this.manyItems); 
+		
 	}
 
 

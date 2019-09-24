@@ -6,4 +6,5 @@ public interface Stack {
  public Queen pop();
  public Queen peek();
  public boolean isEmpty();
+ public Stack clone(); 
 }
