@@ -9,7 +9,7 @@ public class IntegerArrayStack implements Stack {
 	}
 
 	public void push(Integer el) {
-		data[manyItems++] = el; 
+        data[manyItems++] = el; 
 	}
 
 	public Integer pop() {
