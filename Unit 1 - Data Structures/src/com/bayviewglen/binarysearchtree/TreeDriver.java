@@ -15,7 +15,7 @@ public class TreeDriver {
 		
 		bst.inOrderTraversal();
 		bst.preOrderTraversal();
-		bst.search(); 
+		bst.delete(5); 
 		
 		in.close();
 	}
