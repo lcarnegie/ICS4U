@@ -13,6 +13,8 @@ public class nQueens {
 			try {
 				System.out.print("Type in a number: ");
 				n = Integer.valueOf(in.nextLine());
+				if(n < 0)
+					n *= -1; 
 				isValidInput = true;
 			} catch (Exception e) {
 

@@ -2,7 +2,7 @@ package com.bayviewglen.linkedlists;
 
 import java.util.Scanner;
 
-public class AddressBookV2 {// this address book uses a link list
+public class AddressBookV2 {// this address book uses a linked list
 	private ContactNode head;
 
 	public void addContact() {
