@@ -46,36 +46,11 @@ public class IntBinaryTreeNode {
 		this.rightChild = rightChild;
 	}
 
-	public boolean delete(int searchTerm, IntBinaryTreeNode parent) {
-		if(searchTerm < this.getData()) {
-			if(this.getLeft() != null)
-				return this.getLeft().delete(searchTerm, this); 
-			else
-				return false; 
-		}else if(searchTerm > this.getData()) {
-			if(this.getRight() != null)
-				return this.getRight().delete(searchTerm, this); 
-			else
-				return false; 
-		} else {
-			if(this.getLeft() != null && this.getRight() != null) {
-				this.setData(getMinValue(this.getRight()));
-				this.getRight().delete(this.getData(), this); 
-			}else if(parent.getLeft() == this) {
-				parent.setLeft(this.getLeft());
-			}else if(parent.getRight() == this) {
-				parent.setRight(this.getRight());
-			}
-			return true; 
-		}
-	}
+	
+	
 
-	private int getMinValue(IntBinaryTreeNode n) {
-		if(!n.hasLeft())
-			return n.getData(); 
-		else
-			return n.getMinValue(n.getLeft()); 
-	}
+
+	
 
 	
 	

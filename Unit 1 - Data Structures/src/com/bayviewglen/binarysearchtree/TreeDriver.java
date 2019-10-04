@@ -13,9 +13,10 @@ public class TreeDriver {
 			bst.addInteger(in.nextInt());
 		}
 		
-		bst.inOrderTraversal();
-		bst.preOrderTraversal();
+		bst.inOrderTraversal(); 
 		bst.delete(5); 
+		bst.balance(); 
+		
 		
 		in.close();
 	}
