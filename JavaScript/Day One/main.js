@@ -20,7 +20,7 @@ function consoleTest() {
 	arr[3]();
 
 	var obj = {};
-	obj.color = "red";
+	obj.color = "blue";
 	obj.height = 7;
 	obj['shoesize'] = 5; //same thing as saying the above
 	obj.shoesize = 6;
