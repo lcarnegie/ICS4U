@@ -98,7 +98,7 @@ public class DepthFirstSearch {
      * @param args the command-line arguments
      */
     public static void main(String[] args) {
-        In in = new In("tinyGraph.txt");
+        In in = new In("https://algs4.cs.princeton.edu/41graph/tinyG.txt");
         Graph G = new Graph(in);
         int s = 4;
         DepthFirstSearch search = new DepthFirstSearch(G, s);
