@@ -31,10 +31,10 @@ function nQueens(numQueens) {
             }
         }
     }
-    printBoard(qStack);
+    alert('qq');
 
     function shiftQueen() {
-        qStack[qStack.length - 1].setxPos(qStack[qStack.length - 1].xPos + 1);
+        qStack[qStack.length - 1].xPos += 1; 
     }
 
     function backtrack(filled) {
@@ -58,7 +58,7 @@ function nQueens(numQueens) {
         var conflict = false;
         try {
             while (!conflict) {
-                if (temp[temp.length - 1].xPos === curr.xPos || Math.abs(temp[temp.length - 1].xPos - curr.xPos) === Math.abs(temp[temp.length - 1].yPos) - curr.yPos) {
+                if (temp[temp.length - 1].xPos === curr.xPos || Math.abs(temp[temp.length - 1].xPos - curr.xPos) === Math.abs(temp[temp.length - 1].yPos - curr.yPos)) {
                     conflict = true;
                     return true;
                 } else {
@@ -86,17 +86,5 @@ class Queen {
         this.xPos = xPos;
         this.yPos = yPos;
         this.symbol = "Q";
-    }
-
-    setXPos(xPos) {
-        this.xPos = xPos
-    }
-
-    setYPos(yPos) {
-        this.yPos = yPos;
-    }
-
-    equals(q) {
-        return (this.xPos == q.xPos && this.yPos == q.yPos);
     }
 }
