@@ -31,7 +31,11 @@ function nQueens(numQueens) {
             }
         }
     }
-    alert('qq');
+    return printBoard(); 
+
+    function printBoard(){
+
+    }
 
     function shiftQueen() {
         qStack[qStack.length - 1].xPos += 1; 
