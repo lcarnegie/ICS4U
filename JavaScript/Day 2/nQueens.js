@@ -3,21 +3,25 @@ function takeInput() {
     var isValid = false;
     var n = parseInt(str, 10);
     if (isNaN(n)) {
-        alert("Input invalido")
+        alert("Input invalid")
     } else {
-        nQueens(n);
+        if(n < 0){
+            n *= -1; 
+        }
+        document.getElementById("output").innerHTML = nQueens(n);
     }
 }
 
 function nQueens(numQueens) {
     var qStack = [];
     var n = numQueens;
+    if(n == 0)
+        return "There are no solutions"; 
     qStack.push(new Queen(0, 0));
     var isBacktracking = false;
     for (var filled = 0; filled < n;) {
         if (filled == -1) {
-            console.log("There are no solutions.");
-            return;
+            return "There are no solutions.";
         } else if (checkForConflict(qStack[qStack.length - 1]) && !roomToSpare(qStack[qStack.length - 1], n)) {
             filled--;
             qStack.pop();
@@ -31,10 +35,22 @@ function nQueens(numQueens) {
             }
         }
     }
-    return printBoard(); 
+    return printBoard(n, qStack); 
 
-    function printBoard(){
-
+    function printBoard(n, stack){
+        var a = ""; 
+        for(var y = 0; y < n; y++){
+            var queen = qStack[y]; 
+            for(var x = 0; x < n; x++){
+                if(queen.xPos == x){
+                    a += "Q "; 
+                }else{
+                    a += "X "; 
+                }
+            }
+            a += "<br>"; 
+        }
+        return a; 
     }
 
     function shiftQueen() {
@@ -89,6 +105,5 @@ class Queen {
     constructor(xPos, yPos) {
         this.xPos = xPos;
         this.yPos = yPos;
-        this.symbol = "Q";
     }
 }
