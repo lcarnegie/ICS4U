@@ -1,4 +1,5 @@
 var cards = {}; 
+var otherImages = {}; 
 function loadImages() {
     var suits = ['clubs', 'hearts', 'spades', 'diamonds',];
     var highCard = ['A', 'J', 'Q', 'K']; 
@@ -15,19 +16,46 @@ function loadImages() {
             cards[suit + h] = img; 
         }
     }
+    var img = new Image();
+    img.src = "images/tablebackground.jpg"; 
+    otherImages["background"] = img; 
 
+}
+
+function loadBackground(canvas){
+    var canvas = document.getElementById(canvas);   
+    var width = canvas.width;         
+    var height = canvas.height; 
+    var ctx = canvas.getContext("2d");
+    var background = otherImages["background"]; 
+    ctx.drawImage(background, 0, 0, background.width, background.height,    
+                              0, 0, canvas.width, canvas.height); 
+}
+
+function playGame(canvas){
+   loadBackground('canvas'); 
+   var canvas = document.getElementById(canvas);   
+   var width = canvas.width;         
+   var height = canvas.height; 
+   var ctx = canvas.getContext("2d");
+   var numPlayers = getNumPlayers(); 
+    
+}
+
+function getNumPlayers(){
+    
 }
 
 function displayRandomCard(canvas){
     var canvas = document.getElementById(canvas);   
     var width = canvas.width;         
     var height = canvas.height; 
-    var ctx = canvas.getContext("2d");
-    var randomCard = cards[randomCard()]; 
+    var ctx = canvas.getContext("2d"); 
+    var randomCard = cards[getRandomCard()]; 
     ctx.drawImage(randomCard, 250, 250, randomCard.width/4, randomCard.height/4); 
 }
 
-function randomCard(){
+function getRandomCard(){
     var suits = ['clubs', 'hearts', 'spades', 'diamonds'];
     var randomSuit = suits[(Math.floor(Math.random() * 3))]; 
     var randomNumber = (Math.floor(Math.random() * 14) + 1); 
@@ -45,6 +73,6 @@ function randomCard(){
             randomNumber= "A"; 
         }
     }
-    var image = randomSuit + randomNumber; 
+    var image = randomSuit + "" + randomNumber; 
     return image;
 }

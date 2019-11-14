@@ -7,13 +7,13 @@
 	<script src='goFish.js'></script>
 
 </head>
-<body onload="loadImages()">
+<body onload="loadImages();">
 <center>
-<canvas id="canvas" width="800" height="600" style="border: 1px solid #504f4f;"></canvas>
+<canvas id="canvas" width="800" height="600" onload="loadBackground('canvas')" style="border: 1px solid #504f4f;"></canvas>
 </center>
 <br>
 <center>
-<input id='buttonCreateImage' type='button' value='Draw Image' onclick="displayRandomCard('canvas')">
+<input id='Game Start ' type='button' value='Play Go Fish' onclick="playGame('canvas')">
 </center>
 </body>
 </html>
