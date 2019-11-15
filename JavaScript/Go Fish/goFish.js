@@ -33,18 +33,40 @@ function loadBackground(canvas){
 }
 
 function playGame(canvas){
-   loadBackground('canvas'); 
+   loadBackground(canvas); 
    var canvas = document.getElementById(canvas);   
    var width = canvas.width;         
    var height = canvas.height; 
    var ctx = canvas.getContext("2d");
-   var numPlayers = getNumPlayers(); 
+   var numCPU = getNumPlayers(canvas) - 1; //returns an int
+   var players = getPlayers(numCPU); //returns a map or array, user should be p1
+   dealCards(players); 
+   checkForPairs(players); 
+   var gameFinished = false; 
+   while(!gameFinished){
+       
+   }
+   
+
     
 }
 
-function getNumPlayers(){
+function getNumPlayers(canvas){
     
 }
+
+function getPlayers(numCPU){
+
+}
+
+function dealCards(players){
+
+}
+
+function checkForPairs(players){
+
+}
+
 
 function displayRandomCard(canvas){
     var canvas = document.getElementById(canvas);   
