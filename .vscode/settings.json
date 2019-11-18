@@ -1,0 +1,9 @@
+{
+    "files.exclude": {
+        ".metadata": true,
+        ".recommenders": true,
+        "**/.gitattributes": true,
+        "**/.gitignore": true,
+        "**/.vscode": true
+    }
+}

@@ -14,7 +14,7 @@ function createImage(elem){
   var height = canvas.height;       // declares a variable called height and assigns it the height of the canvas
   
   var oCtx = canvas.getContext("2d");
-  currCard = cards["clubs5"]; 
+  currCard = cards[getRandomCard()]; 
   oCtx.drawImage(currCard, 250, 100, currCard.width/4, currCard.height/4); 
   
   /*
@@ -26,7 +26,27 @@ function createImage(elem){
   }
   */ 
 
-
 }
 
+function getRandomCard(){
+  var suits = ['clubs', 'hearts', 'spades', 'diamonds'];
+  var randomSuit = suits[(Math.floor(Math.random() * 3))]; 
+  var randomNumber = (Math.floor(Math.random() * 14) + 1); 
+  if(randomNumber > 10){
+      if(randomNumber === 11){
+          randomNumber = "J"; 
+      }
+      if(randomNumber === 12){
+          randomNumber = "Q"; 
+      }
+      if(randomNumber === 13){
+          randomNumber = "K"; 
+      }
+      if(randomNumber === 14){
+          randomNumber= "A"; 
+      }
+  }
+  var image = randomSuit + "" + randomNumber; 
+  return image;
+}
 

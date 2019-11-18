@@ -1,19 +1,23 @@
 <html>
 	<title>
-		Go Fish 
+		Go Fish
 	</title>
 <head>
 	
-	<script src='goFish.js'></script>
+	<script src='main.js'></script>
 
 </head>
-<body onload="loadImages();">
-<center>
-<canvas id="canvas" width="800" height="600" style="border: 1px solid #504f4f;" onload="loadBackground('canvas')"></canvas>
-</center>
-<br>
-<center>
-<input id='Game Start ' type='button' value='Play Go Fish' onclick="playGame('canvas')">
-</center>
+<body onload="displayRandomCard()">
+
+<h1 id='mainHeaderH1' class='mainHeaderH1'>Go Fish</h1>
+<canvas id="myCanvas" width="800" height="600" style="border:1px solid #ff5100;">
+Your browser does not support the HTML5 canvas tag.
+</canvas>
+
+
+<input id='buttonCreateImage' type='button' value='Draw Image' onclick="displayRandomCard()">
+
+
+
 </body>
 </html>
