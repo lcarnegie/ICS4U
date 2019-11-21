@@ -49,21 +49,7 @@ function playGame(canvas){
     */
 }
 
-function getNumPlayers(canvas){
-    
-}
 
-function getPlayers(numCPU){
-
-}
-
-function dealCards(players){
-
-}
-
-function checkForPairs(players){
-
-}
 
 
 function displayRandomCard(){
