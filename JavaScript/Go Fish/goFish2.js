@@ -125,7 +125,7 @@ function checkForPairs(player){
         for(j= i+1; j < hand.length; j++){
             var curr = hand[j].substring(0, str.length - 1); 
             if(temp === curr){
-                if(player.)
+            
             }
         }
     }
