@@ -1,17 +1,10 @@
 var cards = {}; 
 var other = {}; 
 var players = []; 
-class Player {
-    name; 
-    hand = []; 
-    points; 
-    updates; 
-    constructor(name, type, hand, points){
-        this.name = name; 
-        this.type = type; 
-        this.hand = hand; 
-        this.points = points; //Gives you an update of what happened to your hand after every turn 
-    }
+function Player (name, hand, points) {
+   this.name = name; 
+   this.hand = hand; 
+   this.points = points;
     
 }
 function loadImages(){
@@ -73,6 +66,7 @@ function loadBackground(canvas, width, height, ctx){
 }
 
 function play(canvas, width, height, ctx){
+    drawCards(ctx, cardArr, width/2 - 100, 420); //draws P1's cards *make sure to pass in the hand
     var nPlayers = document.getElementById('numPlayers').value 
     var numCPU = nPlayers - 1; //returns an int
     players = startGame(numCPU); //returns a map or array, user should be p1
@@ -93,17 +87,19 @@ function validateInput(input){
 }
 
 function startGame(numCPU){
-    var p1 = new Player("P1", "user", "", 0); 
-    dealHand(p1); 
-    checkForPairs(p1); 
+    var p1 = new Player("P1", null, 0); 
+    player = dealHand(p1); 
     players.push(p1); 
     for(i = 2; i <=numCPU; i++){
         var playerName = "P" + i; 
-        var player = new Player(playerName, "cpu", "", 0); 
+        var player = new Player(playerName, null, 0); 
         player = dealHand(player); 
-        player = checkForPairs(player); 
         players.push(player); 
     } 
+    checkForPairs(p1); 
+    for(i = 2; i <=numCPU; i++){
+       
+    }
     return players; 
 }
 
@@ -113,13 +109,32 @@ function dealHand(player){
         hand.push(getCard()); 
     }
     player.hand = hand; 
-    return player;
+    
+    return player
+}
+
+
+
+function drawCards(ctx, hand, startX, y){
+    for(i = 0; i < hand.length; i++){
+        hand[i] = cards[hand[i]]; //get the image of the card
+    }
+    for(i = 0; i < hand.length; i++){
+        drawCard(hand[i], ctx, startX + i * (hand[i].width/18), y); 
+    }
 
 }
 
+
+function drawCard(card, ctx, xPos, yPos){
+    ctx.drawImage(card, xPos, yPos, card.width/5, card.height/5);
+    
+}
+
 function checkForPairs(player){
-    var hand = player.hand; //use some other data structure to stor
+    var hand = player.hand; 
     var points = player.points; 
+    var cardsToRemove = []; 
     for(i = 0; i < hand.length; i++){
         var temp = hand[i].substring(0, str.length - 1); 
         for(j= i+1; j < hand.length; j++){
@@ -132,9 +147,6 @@ function checkForPairs(player){
 
 }
 
-function getNumPlayers(canvas, width, height, ctx){
-   
-}
 
 function drawNumPlayers(ctx){ //work on this and card colour scheme
     ctx.font = "48px Arial Black";

@@ -10,22 +10,42 @@
 <body onload="loadImages()">
 
 <h1 id='mainHeaderH1' class='mainHeaderH1' style="text-align: center;">Go Fish</h1>
-<div id="scoreboard" style="text-align: left;">
-	<p>Quack</p>
+<div style="float: left; width: 15%">
+<p>Scoreboard</p>
+<br><br>
+<p>Player 1</p>
+<br><br>
+<p>Player 2</p>
+<br><br>
+<p>Player 3</p>
+<br><br>
+<p>Player 4</p>
 </div>
-<div id="game" style="text-align: center;">
-<canvas id="myCanvas" width="800" height="600" style="position: relative; border:1px solid #ffb38f;">
-Your browser does not support the HTML5 canvas tag.
+<div id="game" style="float: left; width: 70%; text-align: center;">
+<canvas id="myCanvas" width="800" height="600" style="border:1px solid #686868;">
+Some ting went wong
 </canvas>
-<select style="position: relative; bottom: 10px; right: 550px" hidden>
-	<option>P1</option>
+<select id="playerSelector" style="position: relative; z-index: 1; bottom: 10px; right: 500px" hidden>
 	<option>P2</option>
 	<option>P3</option>
 	<option>P4</option>
 </select>
+
+<select id="cardSelector" style="position: relative; z-index: 1; bottom: 10px; right: 500px" hidden>
+		<option hidden></option>
+		<option hidden></option>
+		<option hidden></option>
+		<option hidden></option>
+		<option hidden></option>
+</select>
 <br><br>
 <input id="numPlayers" type="text" placeholder="2-4 players">
 <input id='start' type='button' value='Click to play' onclick="load()">
+</div>
+<div style="float: left; width: 15%" >
+	<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non faucibus magna. Cras luctus tempus augue id venenatis. Pellentesque elit ante, condimentum sit amet tellus sit amet, consectetur vestibulum velit. Cras varius arcu in commodo rhoncus. Maecenas accumsan lacus at porttitor gravida. Nullam vitae pulvinar elit. Aenean lacinia orci non consectetur porta. Maecenas dictum cursus dui, eget egestas purus suscipit at. Sed in mauris sed urna ornare tempus. Sed nec augue sit amet leo aliquet lobortis et ac nisl. Vestibulum bibendum lectus ac pharetra scelerisque. Nulla in luctus nibh, a consectetur dolor. Proin a tortor congue, tristique massa ac, pretium lorem. Nunc ultricies pharetra porttitor. Fusce id mauris in felis porta ullamcorper quis eu eros.
+	</p>
 </div>
 
 
