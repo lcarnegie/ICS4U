@@ -1,15 +1,27 @@
-var cards = {}; 
-var other = {}; 
-var players = []; 
-function Player (name, hand, points) {
-   this.name = name; 
-   this.hand = hand; 
-   this.points = points;
-    
+var cards = {};
+var other = {};
+var cpus = [];
+var nPlayers;
+var canvas;
+var width;
+var height;
+var ctx;
+var humanPlayer;
+var isGameStarted = false; 
+var isHumanTurn = false; 
+var turn = 0;
+function Player(name, hand, points) {
+    this.name = name;
+    this.hand = hand;
+    this.points = points;
+
 }
-function loadImages(){
+function loadImages() {
     var suits = ['clubs', 'hearts', 'spades', 'diamonds',];
-    var highCard = ['A', 'J', 'Q', 'K']; 
+    var highCard = ['A', 'J', 'Q', 'K'];
+    var backImg = new Image(); 
+    backImg.src = "images/cards/back.png"
+    cards["back"] = backImg; 
     for (var c of suits) { //loads all cards from 1 to 10
         var suit = c;
         for (var i = 2; i <= 10; i++) {
@@ -17,244 +29,380 @@ function loadImages(){
             img.src = "images/cards/" + suit + i + ".png";
             cards[suit + i] = img;
         }
-        for(var h of highCard){
-            var img = new Image(); 
+        for (var h of highCard) {
+            var img = new Image();
             img.src = "images/cards/" + suit + h + ".png";
-            cards[suit + h] = img; 
+            cards[suit + h] = img;
         }
     }
-    var img = new Image(); 
+    var img = new Image();
     img.src = "images/tablebackground.jpg"
-    other["background"] = img; 
+    other["background"] = img;
 }
 
-function displayRandomCard(){
-    var card = other["background"]; 
-    var canvas = document.getElementById('myCanvas'); 
-    var width = canvas.width; 
-    var height = canvas.height; 
-
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(card, 250, 250, card.width/4, card.height/4); 
-
-
+function load() {
+    document.getElementById('numPlayers').disabled = true;
+    document.getElementById('start').disabled = true;
+    canvas = document.getElementById('myCanvas');
+    width = canvas.width;
+    height = canvas.height;
+    ctx = canvas.getContext("2d");
+    ctx = changeImageSmoothing(ctx);
+    loadBackground(width, height, ctx);
+    loadUI();
+    play(canvas, width, height, ctx);
 }
 
-function load(){
-    document.getElementById('start').disabled = true; 
-    var canvas = document.getElementById('myCanvas'); 
-    var width = canvas.width; 
-    var height = canvas.height; 
-    var ctx = canvas.getContext("2d");
-    ctx = changeImageSmoothing(ctx); 
-    loadBackground(canvas, width, height, ctx); 
-    loadUI(); 
-    play(canvas, width, height, ctx); 
-}
-
-function changeImageSmoothing(ctx){
-    var nCtx = ctx; 
+function changeImageSmoothing(ctx) {
+    var nCtx = ctx;
     nCtx.mozImageSmoothingEnabled = false;
     nCtx.webkitImageSmoothingEnabled = false;
     nCtx.msImageSmoothingEnabled = false;
     nCtx.imageSmoothingEnabled = false;
-    return nCtx; 
+    return nCtx;
 }
 
-function loadBackground(canvas, width, height, ctx){
-    var background = other["background"]; 
-    ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, width, height); 
+function loadBackground(width, height, ctx) {
+    var background = other["background"];
+    ctx.drawImage(background, 0, 0, background.width, background.height, 0, 0, width, height);
 }
 
 function loadUI() {
-    document.getElementById('playerSelector').hidden = false; 
-    document.getElementById('cardSelector').hidden = false; 
-    document.getElementById('finishTurn').hidden = false; 
+    document.getElementById('playerSelector').hidden = false;
+    document.getElementById('cardSelector').hidden = false;
+    document.getElementById('finishTurn').hidden = false;
 }
 
-function play(canvas, width, height, ctx){
-    //drawCards(ctx, cardArr, width/2 - 100, 420); //draws P1's cards *make sure to pass in the hand
-    var nPlayers = document.getElementById('numPlayers').value 
-    var numCPU = nPlayers - 1; //returns an int
-    players = startGame(numCPU, ctx, width); //returns a map or array, user should be p1
-    var gameFinished = false; 
-   
-    
+function play(canvas, width, height, ctx) {
+    nPlayers = document.getElementById('numPlayers').options[document.getElementById('numPlayers').selectedIndex].value;
+    initPlayers(nPlayers);
+    drawCards(); 
+    setInterval(game, 1500);
 }
 
-function validateInput(input){
-    var isValid = false; 
-    while(!isValid){
-    if(isNaN(input)){
-        alert("Invalid Input. Please enter a whole number between 2 and 4")
-    }else if(input > 4){
-        aler
+function game() {
+    if (!isGameStarted) {
+        drawCards();
+        isGameStarted = true; 
     }
-}   
+    if (turn >= nPlayers) {
+        turn = 0;
+    }
+    checkForPairs(humanPlayer);
+    updateGame(); 
+    for (var i = 1; i < cpus.length; i++) {
+        checkForPairs(cpus[i]);
+        updateGame(); 
+    }
+    if (turn === 0) {//player turn 
+        document.getElementById('playerSelector').disabled = false;
+        document.getElementById('cardSelector').disabled = false;
+        document.getElementById('finishTurn').disabled = false;
+        if(playerTurn()){
+            updateGame(); 
+            checkForPairs(humanPlayer); 
+            updateGame(); 
+            turn++; 
+        }
+    }
+    if(turn === 1){
+        if(cpuTurn(cpus[1])){
+            updateGame(); 
+            checkForPairs(cpus[1]); 
+            updateGame();
+            turn++;  
+        }
+    }
+    if (turn >= nPlayers) {
+        turn = 0;
+    }
+    if(turn === 2){
+        if(cpuTurn(cpus[2])){
+            updateGame(); 
+            checkForPairs(cpus[1]); 
+            updateGame();
+            turn++;  
+        }
+    }
+    if (turn >= nPlayers) {
+        turn = 0;
+    }
+    if(turn === 3){
+        if(cpuTurn(cpus[3])){
+            updateGame(); 
+            checkForPairs(cpus[3]); 
+            updateGame();
+            turn++;  
+        }
+    }
+    checkForEmptyHand(humanPlayer, cpus); 
+    if(checkForWinner(humanPlayer, cpus)){
+        clearInterval(); 
+        displayWinner(checkForWinner(humanPlayer, cpus))
+    }
 }
 
-function startGame(numCPU, ctx, width){
-    var players = []; 
-    var p1 = new Player("P1", null, 0); 
-    dealHand(p1); 
-    checkForPairs(p1); 
-    drawCards(ctx, p1.hand, width/2 - 100, 420);
-    loadUIOptions(numCPU, p1.hand); 
-    players.push(p1); 
-    for(k = 2; k <= numCPU + 1; k++){
-        var playerName = "P" + k; 
-        var player = new Player(playerName, null, 0); 
-        dealHand(player); 
-        checkForPairs(player)
-        players.push(player); 
+function checkForEmptyHand(humanPlayer, cpus){
+    if(humanPlayer.hand.length === 0){
+        alert("You ran out of cards, so you were dealt 5 more from the pile.")
+        dealHand(humanPlayer); 
     }
-    return players; 
-
-}
-
-function loadUIOptions(numCPU, hand){
-    var playerSelect = document.getElementById('playerSelector'); 
-    var cardSelect = document.getElementById('cardSelector'); 
-    for(i = numCPU; i >= 1; i--){
-        var newOption = document.createElement("option"); 
-        playerNumber = i+1; 
-        newOption.text = "P" + playerNumber; 
-        playerSelect.add(newOption); 
-    }
-    for(i = 0; i < hand.length; i++){
-        var newOption = document.createElement("option"); 
-        newOption.text = hand[i].substring(hand[i].length-1) + " of " + hand[i].substring(0,1).toUpperCase() + hand[i].substring(1, hand[i].length-1);
-        cardSelect.add(newOption); 
+    for(var i = 1; i < cpus.length; i++){
+        if(cpus[i].hand.length === 0){
+            alert(cpus[i].name + " ran out of cards, so they were dealt 5 more from the pile.")
+            dealHand(cpus[i]); 
+        }
     }
 }
 
-
-function dealHand(player){
-    var hand = []; 
-    for(i = 0; i < 5; i++){
-        hand.push(getCard()); 
+function checkForWinner(humanPlayer, cpus){
+    if(humanPlayer.points >= 10){
+        return humanPlayer; 
     }
-    player.hand = hand; 
-    
-    return player
+    for(var i = 1; i < cpus.length; i++){
+        if(cpus[i].points >= 10){
+            return cpus[i]; 
+        }
+    }
+}
+
+function displayWinner(player) {
+    alert(player.name + " won! Reload the page to play again!") 
+}
+
+function updateGame() {
+    ctx.clearRect(0, 0, width, height);
+    loadBackground(width, height, ctx);
+    displayPoints(humanPlayer); 
+    for(i = 1; i < cpus.length; i++){
+        displayPoints(cpus[i]); 
+    }
+    drawCards();
+}
+
+function drawCards(){
+if(nPlayers > 3){
+    drawHand(1, humanPlayer.hand); 
+    drawHand(2, cpus[1].hand); 
+    drawHand(3, cpus[2].hand);
+    drawHand(4, cpus[3].hand);  
+} else if(nPlayers > 2){
+    drawHand(1, humanPlayer.hand); 
+    drawHand(2, cpus[1].hand); 
+    drawHand(3, cpus[2].hand); 
+} else if(nPlayers > 1){
+    drawHand(1, humanPlayer.hand); 
+    drawHand(2, cpus[1].hand); 
+}
 }
 
 
-
-function drawCards(ctx, hand, startX, y){
-    for(i = 0; i < hand.length; i++){
-        hand[i] = cards[hand[i]]; //get the image of the card
+function drawHand(pNumber, hand){
+    if(pNumber === 1){
+        for(i=0; i<hand.length; i++){
+            var handNo = i; 
+            var card = cards[hand[handNo]]; 
+            drawCard(card, ctx, width/2 - 100 + i * (card.width/18), 420); 
+        }
+    }else if(pNumber === 2){
+        for(i=0; i<hand.length; i++){
+            var card = cards["back"]; 
+            drawCard(card, ctx, 10, height/2 - 150 + i * card.height/18);
+        }
+    }else if(pNumber == 3){
+        for(i=0; i<hand.length; i++){
+            var card = cards["back"]; 
+            drawCard(card, ctx, width/2 - 100 + i * (card.width/18), 10); 
+        }
+    }else if(pNumber == 4){
+        for(i=0; i<hand.length; i++){
+            var card = cards["back"]; 
+            drawCard(card, ctx, 690, height/2 - 150 + i * card.height/18)
+        }
     }
-    for(i = 0; i < hand.length; i++){
-        drawCard(hand[i], ctx, startX + i * (hand[i].width/18), y); 
-    }
-
 }
 
-
-function drawCard(card, ctx, xPos, yPos){
-    ctx.drawImage(card, xPos, yPos, card.width/5, card.height/5);
-    
-}
-
-function checkForPairs(player){
-    var hand = player.hand; 
+function displayPoints(player){
+    var playerName = player.name; 
     var points = player.points; 
-    for(i = 0; i < hand.length; i++){
-        try{
-        var temp = hand[i].substring(0, hand[i].length - 1); 
-        }catch(e){}
-        for(j= i+1; j < hand.length; j++){
-            try{
-            var curr = hand[j].substring(0, hand[j].length - 1); 
-            if(temp === curr){
-                points++; 
-                var card1 = hand[i].substring(hand[i].length-1) + " of " + hand[i].substring(0,1).toUpperCase() + hand[i].substring(1, hand[i].length-1); 
-                var card2 = hand[j].substring(hand[j].length-1) + " of " + hand[j].substring(0,1).toUpperCase() + hand[j].substring(1, hand[j].length-1);  
-                if(player.name === "P1"){
-                    alert("Hooray! Your " + card1 + " and your " + card2 + " made a pair! You earned 1 point."); 
-                }else{
-                    alert(player.name +"'s " + card1 + " and " + card2 + " made a pair! They earned 1 point."); 
-                }
-                displayPoints(player.name, points); 
-                hand[i] = null, hand[j] = null, temp = null, curr = null; 
-                j = hand.length; 
-            }
-        }catch(e){}
-        }
-    }
-    for(i = hand.length; i >= 0; i--){
-        if(hand[i] === null){
-            hand.splice(i, 1); 
-        }
-    }
-    player.hand = hand; 
-    player.points = points; 
-
-    return player; 
-
-}
-
-function displayPoints(playername, points){
-    if(playername === "P1"){
+    if(playerName === "You"){
         document.getElementById("p1score").innerHTML = points; 
-    }else if(playername === "P2"){
+    }else if(playerName === "CPU1"){
         document.getElementById("p2score").innerHTML = points; 
-    }else if(playername === "P3"){
+    }else if(playerName === "CPU2"){
         document.getElementById("p3score").innerHTML = points; 
-    }else if(playername === "P4"){
+    }else if(playerName === "CPU3"){
         document.getElementById("p4score").innerHTML = points; 
     }
 }
 
-
-function drawNumPlayers(ctx){ //work on this and card colour scheme
-    ctx.font = "48px Arial Black";
-    ctx.fillStyle = 
-    ctx.fillText("How many players?", 190, 200);
-    var nPOptions = ["two", "three", "four"]
-    for (i = 195, j = 0; i < 496 && j < 2; i+=150, j++){
-        roundedRect(ctx, i, 250, 100, 125, 5);
-        ctx.fillStyle = "#801f1f";
-        ctx.fill(); 
+function playerTurn() {
+    if(!isHumanTurn){
+        return false; 
+    }else if(isHumanTurn){
+        document.getElementById('playerSelector').disabled = true;
+        document.getElementById('cardSelector').disabled = true;
+        document.getElementById('finishTurn').disabled = true;
+        var cpuSelection = document.getElementById('playerSelector').options[document.getElementById('playerSelector').selectedIndex].value;
+        var cardSelection = document.getElementById('cardSelector').options[document.getElementById('cardSelector').selectedIndex].value;
+        transferCard(cpus[cpuSelection], humanPlayer, cardSelection); 
+        isHumanTurn = false; 
+        return true; 
     }
-    ctx.font = "55px Century Gothic";  
-    ctx.fillStyle = "#ffffff";
-    ctx.fillText("2", 205, 300)
+
 }
 
-function roundedRect(ctx, x, y, width, height, radius) {
-    ctx.beginPath();
-    ctx.moveTo(x, y + radius);
-    ctx.lineTo(x, y + height - radius);
-    ctx.arcTo(x, y + height, x + radius, y + height, radius);
-    ctx.lineTo(x + width - radius, y + height);
-    ctx.arcTo(x + width, y + height, x + width, y + height-radius, radius);
-    ctx.lineTo(x + width, y + radius);
-    ctx.arcTo(x + width, y, x + width - radius, y, radius);
-    ctx.lineTo(x + radius, y);
-    ctx.arcTo(x, y, x, y + radius, radius);
-    ctx.stroke();
-  }
+function cpuTurn(cpu) {
+    var playerSelection = getRandomPlayer(cpu);  //picks a number between 1 and numPlayers - 1 (current player can't steal from themself)
+    var cardSelection = getRandomCard(); 
+    transferCard(playerSelection, cpu, cardSelection); 
+    return true; 
+}
 
-function getCard(){
-    var suits = ['clubs', 'hearts', 'spades', 'diamonds'];
-    var randomSuit = suits[(Math.floor(Math.random() * 3))]; 
-    var randomNumber = (Math.floor(Math.random() * 14) + 1); 
-    if(randomNumber > 10){
-        if(randomNumber === 11){
-            randomNumber = "J"; 
-        }
-        if(randomNumber === 12){
-            randomNumber = "Q"; 
-        }
-        if(randomNumber === 13){
-            randomNumber = "K"; 
-        }
-        if(randomNumber === 14){
-            randomNumber= "A"; 
+function getRandomPlayer(cpu){
+    var playersToChoose = []; 
+    playersToChoose[0] = humanPlayer; 
+    for(var i = 1; i < cpus.length; i++){
+        if(cpus[i] === cpu){
+        }else{
+        playersToChoose.push(cpus[i]);
         }
     }
-    var card = randomSuit + "" + randomNumber; 
+    var randomIndex = Math.floor(Math.random() * playersToChoose.length); 
+    return playersToChoose[randomIndex];
+}
+
+function getRandomCard(){
+    var card = getCard(); 
+    return card.substring(card.length-1); 
+}
+
+function transferCard(playerFrom, playerTo, card){
+    var playerFromHand = playerFrom.hand; 
+    if(card.trim() == "0"){
+        var card = "10"; 
+    }
+    for(var i = 0; i < playerFromHand.length; i++){
+        var curr = playerFromHand[i].substring(playerFromHand[i].length-1); 
+        if(curr == 0){
+            curr = 10; 
+        }
+        if(curr === card){
+            var cardToTransfer = playerFromHand.splice(i, 1)[0]; 
+            playerTo.hand.push(cardToTransfer); 
+            alert(playerTo.name + " asked " + playerFrom.name + " if there were any " + card + "'s in their hand. " + playerFrom.name + " had a " + curr + ", and gave it to " + playerTo.name); 
+            return; 
+        }
+    }
+    goFish(playerFrom, playerTo, card); 
+}
+
+function goFish(playerFrom, playerTo, card){
+    alert(playerTo.name + " asked " + playerFrom.name + " for a " + card + ", but was told to \"Go Fish!\". A card was drawn from the pile."); 
+    playerTo.hand.push(getCard());
+}
+
+function getInput(){
+    var cpuSelection = document.getElementById('playerSelector').options[document.getElementById('playerSelector').selectedIndex].value;
+    var cpuNumber = cpuSelection.substring(cpuSelection.length - 1); 
+    var cardSelection = document.getElementById('cardSelector').options[document.getElementById('cardSelector').selectedIndex].value;
+    isHumanTurn = validateSelection(cpuNumber, cardSelection); 
+    
+}
+
+function validateSelection(cpu, card){
+    if(cpu > nPlayers - 1){
+        alert("Please select a CPU that is in the game!"); 
+        return false; 
+    }
+    for(var i = 0; i < humanPlayer.hand.length; i++){// checks to see if the human player selected a card in their hand
+        var curr = humanPlayer.hand[i].substring(humanPlayer.hand[i].length-1); 
+        if(curr === card){
+            return true; 
+        }
+    }
+    alert("Please select a card in your hand!")
+    return false; 
+}
+
+function initPlayers(nPlayers) {
+    humanPlayer = new Player("You", [], 0);
+    dealHand(humanPlayer);
+    for (i = 1; i < nPlayers; i++) {
+        var player = new Player("CPU" + i, [], 0);
+        dealHand(player);
+        cpus[i] = player;
+    }
+}
+
+function drawBoard(ctx, width, height) {
+    clearRect(0, 0, width, height);
+    loadBackground(width, height, ctx);
+}
+
+function dealHand(player) {
+    var hand = [];
+    for (var i = 0; i < 5; i++) {
+        hand.push(getCard());
+    }
+    player.hand = hand;
+}
+
+function drawCard(card, ctx, xPos, yPos) {
+    ctx.drawImage(card, xPos, yPos, card.width / 5, card.height / 5);
+}
+
+function checkForPairs(player) {
+    var hand = player.hand;
+    var points = 0; 
+    for (i = 0; i < hand.length; i++) {
+        if(hand[i] === null){
+        }else{
+        var temp = hand[i].charAt(hand[i].length - 1)
+        for (j = i + 1; j < hand.length; j++) {
+            if(hand[j] === null){
+            } else {
+            var handJ = hand[j]; 
+            var curr = handJ.substring(handJ.length - 1);
+            if (temp === curr) {
+                alert(player.name + " got a pair!")
+                points++;
+                hand[i] = null, hand[j] = null; 
+            }
+            }
+        }
+    }
+    }
+    for (var i = hand.length; i >= 0; i--) {// remove all nulls
+        if (hand[i] === null) {
+            hand.splice(i, 1);
+        }
+    }
+    player.hand = hand;
+    player.points += points; 
+}
+
+
+
+function getCard() {
+    var suits = ['clubs', 'hearts', 'spades', 'diamonds'];
+    var randomSuit = suits[(Math.floor(Math.random() * 4))];
+    var randomNumber = (Math.floor(Math.random() * 14) + 2);
+    if (randomNumber > 10) {
+        if (randomNumber === 11) {
+            randomNumber = "J";
+        }
+        if (randomNumber === 12) {
+            randomNumber = "Q";
+        }
+        if (randomNumber === 13) {
+            randomNumber = "K";
+        }
+        if (randomNumber === 14) {
+            randomNumber = "A";
+        }
+    }
+    var card = randomSuit + "" + randomNumber;
     return card;
 }
+ 

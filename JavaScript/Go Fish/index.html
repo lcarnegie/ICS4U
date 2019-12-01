@@ -3,43 +3,72 @@
 		Go Fish
 	</title>
 <head>
-	
 	<script src='goFish.js'></script>
-
+	<link rel="stylesheet" href="goFish.css">
 </head>
 <body onload="loadImages()">
-
-<h1 id='mainHeaderH1' class='mainHeaderH1' style="text-align: center;">Go Fish</h1>
-<div style="float: left; width: 15%">
-<p>Scoreboard</p>
+<h1 id="header">Go Fish</h1>
+<div id="scoreboard">
+<p id="score-head">Scoreboard</p>
+<br>
+<p>Player 1: <span id="p1score" class="scores"></span></p>
 <br><br>
-<p>Player 1: <span id="p1score"></span></p>
+<p>Player 2: <span id="p2score" class="scores"></span></p>
 <br><br>
-<p>Player 2: <span id="p2score"></span></p>
+<p>Player 3: <span id="p3score" class="scores"></span></p>
 <br><br>
-<p>Player 3: <span id="p3score"></span></p>
-<br><br>
-<p>Player 4: <span id="p4score"></span></p>
+<p>Player 4: <span id="p4score" class="scores"></span></p>
 </div>
 <div id="game" style="float: left; width: 70%; text-align: center;">
 <canvas id="myCanvas" width="800" height="600" style="border:1px solid #686868;">
 Some ting went wong
 </canvas>
 <br><br>
-<input id="numPlayers" type="text" placeholder="2-4 players">
+<div id="playerselection">
+<span>No. of Players</span>
+<select id="numPlayers">
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+</select>
 <input id='start' type='button' value='Click to play' onclick="load()">
+</div>
 <br>
-<div id="UI" style="position: relative; z-index: 1; bottom: 70px;">
-<select id="playerSelector" hidden>
+<div id="UI">
+<select id="playerSelector" hidden disabled>
+	<option value="1">CPU 1</option>
+	<option value="2">CPU 2</option>
+	<option value="3">CPU 3</option>
 </select>
-<select id="cardSelector" hidden>
+<select id="cardSelector" hidden disabled>
+	<option value="A">A</option>
+	<option value="2">2</option>
+	<option value="3">3</option>
+	<option value="4">4</option>
+	<option value="5">5</option>
+	<option value="6">6</option>
+	<option value="7">7</option>
+	<option value="8">8</option>
+	<option value="9">9</option>
+	<option value="0">10</option>
+	<option value="J">J</option>
+	<option value="Q">Q</option>
+	<option value="K">K</option>
 </select>
-<input id='finishTurn' type='button' value='Go!' onclick="" hidden disabled>
+<input id='finishTurn' type='button' value='Go!' onclick="getInput()" hidden disabled>
 </div>
 </div>
-<div style="float: left; width: 15%" >
+<div id="rules">
 	<p>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce non faucibus magna. Cras luctus tempus augue id venenatis. Pellentesque elit ante, condimentum sit amet tellus sit amet, consectetur vestibulum velit. Cras varius arcu in commodo rhoncus. Maecenas accumsan lacus at porttitor gravida. Nullam vitae pulvinar elit. Aenean lacinia orci non consectetur porta. Maecenas dictum cursus dui, eget egestas purus suscipit at. Sed in mauris sed urna ornare tempus. Sed nec augue sit amet leo aliquet lobortis et ac nisl. Vestibulum bibendum lectus ac pharetra scelerisque. Nulla in luctus nibh, a consectetur dolor. Proin a tortor congue, tristique massa ac, pretium lorem. Nunc ultricies pharetra porttitor. Fusce id mauris in felis porta ullamcorper quis eu eros.
+		The Rules:
+		<br>
+		<br>
+		1. 5 cards are dealt to each player (a group of 2, 3 or 4 people). <br> <br>
+		2. Before starting the game, all of the players put any pairs they happen to have in their hand down and earn a point for each pair. <br><br>
+		3. Starting with the first player and moving clockwise, the player asks one of their opponents "Do you have a ____ ?"  The card requested should be one the player has in their hand. <br><br>
+		4. If the opponent has the card, they must give it to the player who earns a point for making a match.  If the opponent does not have the card they say "Go Fish!" <br>The player must then pick a single card from the messed up, face down pile of cards.  <br><br>
+		5. The game is won when one person gets 10 points.
+	
 	</p>
 </div>
 

@@ -1,0 +1,50 @@
+body {
+    background-color: #f0f8ff;
+}
+canvas{
+    background-color: white;
+}
+
+#header{
+    text-align: center;
+    font-family: "Century Gothic";
+    font-weight: bold;
+    color: rgb(153, 37, 37); 
+}
+
+#scoreboard{
+    float: left; 
+    width: 15%; 
+    font-family: "Century Gothic";
+    font-size: 20px;
+}
+
+#score-head{
+    font-weight: bold;
+    font-size: 22px;
+    color: rgb(153, 37, 37); 
+}
+
+.scores {
+    font-weight: bold;
+}
+
+#UI {
+    position: relative; 
+    z-index: 1; 
+    bottom: 90px;
+}
+
+#playerselection {
+    font-family: "Century Gothic";
+    font-weight: bold;
+    color: rgb(153, 37, 37);
+}
+
+#rules{
+    float: left; 
+    width: 15%; 
+    font-family: "Century Gothic"; 
+    font-size: 15px;
+    font-weight: bold;
+}
