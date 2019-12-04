@@ -254,9 +254,14 @@ function playerTurn() {
 
 function cpuTurn(cpu) {
     var playerSelection = getRandomPlayer(cpu);  //picks a number between 1 and numPlayers - 1 (current player can't steal from themself)
-    var cardSelection = getRandomCard(); 
+    var cardSelection = getRandomSuitInHand(cpu);  
     transferCard(playerSelection, cpu, cardSelection); 
     return true; 
+}
+
+function getRandomSuitInHand(cpu){
+    var randomCardIndex = Math.floor(Math.random() * (cpu.hand.length - 1)); 
+    return cpu.hand[randomCardIndex].substring(cpu.hand[randomCardIndex].length - 1); 
 }
 
 function getRandomPlayer(cpu){
@@ -279,7 +284,7 @@ function getRandomCard(){
 
 function transferCard(playerFrom, playerTo, card){
     var playerFromHand = playerFrom.hand; 
-    if(card.trim() == "0"){
+    if(card == "0"){
         var card = "10"; 
     }
     for(var i = 0; i < playerFromHand.length; i++){
@@ -328,7 +333,7 @@ function validateSelection(cpu, card){
 function initPlayers(nPlayers) {
     humanPlayer = new Player("You", [], 0);
     dealHand(humanPlayer);
-    for (i = 1; i < nPlayers; i++) {
+    for (var i = 1; i < nPlayers; i++) {
         var player = new Player("CPU" + i, [], 0);
         dealHand(player);
         cpus[i] = player;
@@ -367,7 +372,8 @@ function checkForPairs(player) {
             if (temp === curr) {
                 alert(player.name + " got a pair!")
                 points++;
-                hand[i] = null, hand[j] = null; 
+                hand[i] = null, hand[j] = null, curr = null, temp = null;
+                j = hand.length; //exit loop, no need to compare null. 
             }
             }
         }
@@ -387,7 +393,7 @@ function checkForPairs(player) {
 function getCard() {
     var suits = ['clubs', 'hearts', 'spades', 'diamonds'];
     var randomSuit = suits[(Math.floor(Math.random() * 4))];
-    var randomNumber = (Math.floor(Math.random() * 14) + 2);
+    var randomNumber = Math.floor((Math.random() * (14 - 2 + 1)) + 2)
     if (randomNumber > 10) {
         if (randomNumber === 11) {
             randomNumber = "J";
