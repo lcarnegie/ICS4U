@@ -22,7 +22,6 @@ public class nQueens {
 		}
 			qStack = new QueenArrayStack(n);
 			qStack.push(new Queen(0, 0));
-			boolean isBacktracking = false;
 			for (int filled = 0; filled < n;) {
 				if (filled == -1) { // only gets here if the first queen has been shifted until there is no room to
 									// spare.
