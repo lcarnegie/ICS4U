@@ -6,6 +6,12 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - zigzag",
+            "request": "launch",
+            "mainClass": "zigzag"
+        },
+        {
+            "type": "java",
             "name": "CodeLens (Launch) - nQueens",
             "request": "launch",
             "mainClass": "com.bayviewglen.nQueens.nQueens",
