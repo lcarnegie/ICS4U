@@ -12,7 +12,3 @@ function startQuiz() {
     let questions = initQuestions(); 
 
 }
-
-functions initQuestions() {
-
-}

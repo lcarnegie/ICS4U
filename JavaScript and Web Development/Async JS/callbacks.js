@@ -1,24 +1,23 @@
-const posts =  [
-    {title: "Post One", body: "This is post one"},
-    {title: "Post Two", body: "This is post two"}
-]
+const posts = [
+    {title: 'Post 1', body: 'This is post 1' },
+    {title: 'Post 2', body: 'This is post 2' }
+]; 
 
-function getPosts() {
+function getPosts(){
     setTimeout(() => {
         let output = ''; 
         posts.forEach((post, index) => {
-            output += `<li>${post.title}</li>`; 
+            output +=  `<li>${post.title} <br> ${post.body}</li>`
         }); 
-        document.body.innerHTML = output; 
+        document.getElementById('posts').innerHTML = output; 
     }, 1000); 
 }
 
 function createPost(post, callback) {
     setTimeout(() => {
-        posts.push(post)
+        posts.push(post); 
         callback(); 
-    }, 2000)
+    }, 2000); 
 }
 
-
-createPost({title: "Post Three", body: "This is post three"}, getPosts); 
+createPost({title: 'Post 3', body: 'This is post 3'}, getPosts); 
