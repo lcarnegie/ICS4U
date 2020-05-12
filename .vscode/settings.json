@@ -5,5 +5,10 @@
         "**/.gitattributes": true,
         "**/.gitignore": true,
         "**/.vscode": true
-    }
+    },
+    "prettier.singleQuote": true, 
+    "[javascript]": {
+        "editor.formatOnSave": true
+    },
+    
 }
