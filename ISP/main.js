@@ -1,6 +1,8 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
+let background = {};
+
 //IMPORTANT NOTE: Origin (0,0) of the canvas is at the top-left corner of the canvas area. 
 
 /* Displays the default value in each of the HTML range sliders for the inital values upon loading the page, then draws the initial state of the animation*/
@@ -28,6 +30,8 @@ let vy = vel * Math.sin(angle); // vertical velocity of the projectile, in pixel
 let y = yo; // y-position of the projectile, in pixels from the origin (top-left corner); set to initial position in projectile motion
 let x = xo; // x-position of the projectile, in pixels from the origin (top-left corner); set to initial position in projectile motion
 
+let platformX = 0; //x-position of starting platform, in pixels from the origin (top-left corner)
+let platformY = 0; //x-position of starting platform, in pixels from the origin (top-left corner)
 
 /* Draws the background of each animation frame*/
 function drawBackground() {
@@ -43,23 +47,41 @@ function drawBackground() {
         i += 40;
     }
 
-    ctx.fillStyle = "#B3001B"
-    ctx.fillRect(xo - radius, yo + radius, radius + 10, document.getElementById('ynaught').value * scale)
-
-
     ctx.fillStyle = 'black';
+    ctx.font = "15px Arial"
+    ctx.fillText("Scale:", 30, 485)
     ctx.font = "12px Arial"
-    ctx.fillText("1 metre", 41, 495); //sets color & font, then draws label for scaling reference
-    ctx.fillRect(50, 470, 24, 10);
+    ctx.fillText("1 metre", 80, 495); //sets color & font, then draws label for scaling reference
+    ctx.fillRect(89, 470, 24, 10);
     ctx.fillStyle = '#567D46'
-    ctx.fillRect(52, 470, 20, 8); //draws scaling reference
+    ctx.fillRect(91, 470, 20, 8); //draws scaling reference
+    background = ctx.getImageData(0, 0, canvas.width, canvas.height);
 }
+
+/* Draws the platform the projectile rests on when an initial height is being chosen. */
+function drawPlatform() {
+    drawBackground();
+    ctx.beginPath();
+    ctx.arc(x, 435 - document.getElementById('ynaught').value * scale, radius, 0, 2 * Math.PI);
+    ctx.fillStyle = 'orange';
+    ctx.fill();
+    ctx.fillStyle = '#B3001B'
+    ctx.fillRect(x - radius, 435 - document.getElementById('ynaught').value * scale + radius, radius * 2, document.getElementById('ynaught').value * scale)
+}
+
+/* Draws the platform when the projectile is in motion. Redrawn every time the canvas is updated */
+function drawPlatform2() {
+    ctx.fillStyle = '#B3001B'
+    ctx.fillRect(xo - radius, 435 - document.getElementById('ynaught').value * scale + radius, radius * 2, document.getElementById('ynaught').value * scale)
+}
+
 
 /* Draws each frame in the animation; clears the canvas, draws the background, 
 and draws the projectile at its current position.*/
 function drawFrame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    drawBackground()
+    drawBackground();
+    drawPlatform2();
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.fillStyle = 'orange';
@@ -88,6 +110,7 @@ function resetSim() {
     t = 0;
     animation = clearInterval(animation);
     drawFrame();
+    drawPlatform();
     document.getElementById('run').disabled = false;
     document.getElementById('reset').disabled = true;
 }
