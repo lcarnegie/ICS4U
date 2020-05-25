@@ -1,7 +1,8 @@
 const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 
-let background = {};
+
+
 
 //IMPORTANT NOTE: Origin (0,0) of the canvas is at the top-left corner of the canvas area. 
 
@@ -70,7 +71,7 @@ function drawPlatform() {
 }
 
 /* Draws the platform when the projectile is in motion. Redrawn every time the canvas is updated */
-function drawPlatform2() {
+function drawAnimatedPlatform() {
     ctx.fillStyle = '#B3001B'
     ctx.fillRect(xo - radius, 435 - document.getElementById('ynaught').value * scale + radius, radius * 2, document.getElementById('ynaught').value * scale)
 }
@@ -81,7 +82,7 @@ and draws the projectile at its current position.*/
 function drawFrame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     drawBackground();
-    drawPlatform2();
+    drawAnimatedPlatform();
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, 2 * Math.PI);
     ctx.fillStyle = 'orange';
@@ -137,4 +138,19 @@ function runSim() {
 }
 
 
+/*
+ Citations:
 
+ PHET Colorado Projectile Simulator provided most of the inspiration: https://phet.colorado.edu/sims/html/projectile-motion/latest/projectile-motion_en.html
+
+ Walter Fendt's Kinematics simulator provided inspiration: https://www.walter-fendt.de/html5/phen/projectile_en.htm
+
+ MDN Canvas Tutorial and Reference: https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API
+
+ Simple Kinematics simulator tutorial, demonstrated how to use kinematics equations in simulation: https://ef.engr.utk.edu/ef230-2018-08/modules/matlab-webpage/
+
+ Ryan Ghaida's tutorial for building a kinematics simulation: https://medium.com/@ryaboug/2d-projectile-motion-using-canvas-and-js-41f77e971a07
+
+ Coolors.co, for the colour scheme: coolors.co
+
+*/
